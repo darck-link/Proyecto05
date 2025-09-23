@@ -39,7 +39,7 @@
                 <tbody>
                     @forelse($reservas as $r)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 border-b align-top">{{ $r->cliente }}</td>
+                            <td class="px-4 py-3 border-b align-top">{{ $r->user->name }}</td>
                             <td class="px-4 py-3 border-b align-top">{{ $r->fecha }}</td>
                             <td class="px-4 py-3 border-b align-top">{{ $r->servicio->nombre }}</td>
                             <td class="px-4 py-3 border-b align-top">

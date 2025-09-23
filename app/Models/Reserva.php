@@ -8,10 +8,15 @@ class Reserva extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['servicio_id','cliente','fecha'];
+    protected $fillable = ['servicio_id','user_id','fecha','imagen']; 
 
     public function servicio()
     {
         return $this->belongsTo(Servicio::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

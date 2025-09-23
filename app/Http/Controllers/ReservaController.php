@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Reserva;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
@@ -37,22 +38,21 @@ class ReservaController extends Controller
         $data = $request->validate([
             'servicio_id' => 'required|exists:servicios,id',
             'fecha' => 'required|date',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // <-- agregado
         ]);
 
-        $data['cliente'] = auth()->user()->name;
+        $data['user_id'] = Auth::id(); // Guardar el usuario autenticado
 
-        // 🔹 Verificar si ya existe una reserva en ese servicio y fecha
-        $existe = Reserva::where('servicio_id', $data['servicio_id'])
-                        ->where('fecha', $data['fecha'])
-                        ->exists();
-
-        if ($existe) {
-            return back()->withErrors(['fecha' => 'Ya existe una reserva para este servicio en esa fecha.']);
+        // Guardar la imagen si existe
+        if ($request->hasFile('imagen')) {
+            $data['imagen'] = $request->file('imagen')->store('reservas', 'public');
         }
 
         Reserva::create($data);
+
         return redirect()->route('reservas.index')->with('success','Reserva creada.');
     }
+
 
 
     public function edit(Reserva $reserva)
@@ -65,11 +65,19 @@ class ReservaController extends Controller
     {
         $data = $request->validate([
             'servicio_id' => 'required|exists:servicios,id',
-            'cliente' => 'required|string|max:100',
             'fecha' => 'required|date',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // <-- agregado
         ]);
 
+        $data['user_id'] = Auth::id(); // Mantener el usuario autenticado
+
+        // Guardar la imagen si existe
+        if ($request->hasFile('imagen')) {
+            $data['imagen'] = $request->file('imagen')->store('reservas', 'public');
+        }
+
         $reserva->update($data);
+
         return redirect()->route('reservas.index')->with('success','Reserva actualizada.');
     }
 
