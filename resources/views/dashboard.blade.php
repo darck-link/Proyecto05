@@ -1,12 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+        <div class="flex flex-col space-y-4">
+            <!-- Menú de Navegación -->
+            <div class="flex flex-wrap gap-2 pb-4 border-b border-gray-200">
+                <a href="{{ route('dashboard') }}" 
+                   class="px-4 py-2 rounded-lg text-sm font-medium transition duration-150 
+                          {{ request()->routeIs('dashboard') ? 'bg-blue-100 text-blue-700 border border-blue-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                    🏠 Dashboard
+                </a>
+                
+                @auth
+                    @if(auth()->user()->hasRole('admin'))
+                    <a href="{{ route('servicios.index') }}" 
+                       class="px-4 py-2 rounded-lg text-sm font-medium transition duration-150 
+                              {{ request()->routeIs('servicios.*') ? 'bg-green-100 text-green-700 border border-green-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                        📋 Gestión de Servicios
+                    </a>
+                    @endif
+                    
+                    <a href="{{ route('reservas.index') }}" 
+                       class="px-4 py-2 rounded-lg text-sm font-medium transition duration-150 
+                              {{ request()->routeIs('reservas.*') ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                        📅 Gestión de Reservas
+                    </a>
+                @endauth
+            </div>
+            
+            <!-- Título del Dashboard -->
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    🏠 Dashboard Principal
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">Bienvenido al sistema de gestión de reservas</p>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Resto de tu contenido del dashboard -->
             @role('admin')
             <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
                 <h3 class="text-lg font-semibold text-green-800 mb-2">👑 Eres Administrador</h3>
