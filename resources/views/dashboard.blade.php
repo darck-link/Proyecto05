@@ -6,10 +6,14 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
-            </div>
-        </div>
+        <h1>¡Bienvenido!</h1>
+
+        @role('admin')
+            <p>Como administrador tienes acceso a la gestión de usuarios.</p>
+        @endrole
+
+        @role('editor')
+            <p>Eres editor, puedes crear artículos.</p>
+        @endrole
     </div>
 </x-app-layout>
