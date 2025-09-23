@@ -7,11 +7,24 @@ use Illuminate\Http\Request;
 
 class ReservaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $reservas = Reserva::with('servicio')->get();
-        return view('reservas.index', compact('reservas'));
+        $q = $request->input('q');
+
+        $query = Reserva::with('servicio');
+
+        if ($q) {
+            $query->where('cliente', 'like', "%{$q}%")
+                  ->orWhereHas('servicio', function($sub) use ($q) {
+                      $sub->where('nombre', 'like', "%{$q}%");
+                  });
+        }
+
+        $reservas = $query->orderBy('fecha', 'desc')->paginate(10)->withQueryString();
+
+        return view('reservas.index', compact('reservas', 'q'));
     }
+
 
     public function create()
     {

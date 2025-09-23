@@ -7,10 +7,20 @@ use Illuminate\Support\Facades\Storage;
 
 class ServicioController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $servicios = Servicio::all();
-        return view('servicios.index', compact('servicios'));
+        $q = $request->input('q');
+
+        $query = Servicio::query();
+
+        if ($q) {
+            $query->where('nombre', 'like', "%{$q}%");
+        }
+
+        // ordena y paginar (10 por página). withQueryString mantiene ?q=... en links
+        $servicios = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
+
+        return view('servicios.index', compact('servicios', 'q'));
     }
 
     public function create()
