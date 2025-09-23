@@ -31,7 +31,7 @@
                                 <a href="{{ route('servicios.index') }}" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 mr-2">
                                     📋 Gestionar Servicios
                                 </a>
-                                <a href="{{ route('admin.dashboard') }}" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 mr-2">
+                                <a href="{{ route('dashboard') }}" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 mr-2">
                                     🛠️ Panel Admin
                                 </a>
                             @endif
