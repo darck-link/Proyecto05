@@ -12,13 +12,15 @@ class ReservaController extends Controller
     {
         $q = $request->input('q');
 
-        $query = Reserva::with('servicio');
+        $query = Reserva::with(['servicio', 'user']); //  Agregar relación con user
 
         if ($q) {
-            $query->where('cliente', 'like', "%{$q}%")
-                  ->orWhereHas('servicio', function($sub) use ($q) {
-                      $sub->where('nombre', 'like', "%{$q}%");
-                  });
+            $query->whereHas('user', function($sub) use ($q) {
+                    $sub->where('name', 'like', "%{$q}%"); //  Buscar por nombre de usuario
+                })
+                ->orWhereHas('servicio', function($sub) use ($q) {
+                    $sub->where('nombre', 'like', "%{$q}%");
+                });
         }
 
         $reservas = $query->orderBy('fecha', 'desc')->paginate(10)->withQueryString();

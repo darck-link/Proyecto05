@@ -1,77 +1,84 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Reservas</h2>
-
-            <div class="flex items-center space-x-3">
-                <form method="GET" action="{{ route('reservas.index') }}" class="flex items-center">
-                    <input type="search" name="q" value="{{ $q ?? '' }}" placeholder="Buscar cliente o servicio..." 
-                           class="border rounded-l px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-r text-sm">Buscar</button>
-                </form>
-
-                <a href="{{ route('reservas.create') }}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow text-sm">
-                    + Nueva Reserva
-                </a>
-            </div>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Reservas
+        </h2>
     </x-slot>
 
-    <div class="py-6 px-4">
-        @if(session('success'))
-            <div class="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-3xl font-bold text-gray-900">Reservas</h1>
+                        <a href="{{ route('reservas.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Nueva Reserva
+                        </a>
+                    </div>
 
-        <div class="overflow-x-auto bg-white rounded shadow">
-            <table class="w-full text-sm text-left border-collapse">
-                <thead class="bg-gray-100 text-gray-700 uppercase">
-                    <tr>
-                        <th class="px-4 py-3 border-b">Cliente</th>
-                        <th class="px-4 py-3 border-b">Fecha</th>
-                        <th class="px-4 py-3 border-b">Servicio</th>
-                        <th class="px-4 py-3 border-b">Imagen</th>
-                        <th class="px-4 py-3 border-b text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($reservas as $r)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3 border-b align-top">{{ $r->user->name }}</td>
-                            <td class="px-4 py-3 border-b align-top">{{ $r->fecha }}</td>
-                            <td class="px-4 py-3 border-b align-top">{{ $r->servicio->nombre }}</td>
-                            <td class="px-4 py-3 border-b align-top">
-                                @if($r->servicio->imagen)
-                                    <img src="{{ asset('storage/'.$r->servicio->imagen) }}" class="w-20 h-16 object-cover rounded">
-                                @else
-                                    <span class="text-gray-400 text-sm">Sin imagen</span>
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 border-b text-center align-top space-x-2">
-                                <a href="{{ route('reservas.edit', $r) }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs">Editar</a>
-                                <form action="{{ route('reservas.destroy', $r) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Eliminar reserva?');">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="inline-block bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-4 py-6 text-center text-gray-500">No hay reservas.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                    <!-- Buscador -->
+                    <form method="GET" action="{{ route('reservas.index') }}" class="mb-6">
+                        <div class="flex gap-2">
+                            <input type="text" name="q" value="{{ $q }}" placeholder="Buscar por cliente o servicio..." 
+                                   class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="submit" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700">
+                                Buscar
+                            </button>
+                            @if($q)
+                                <a href="{{ route('reservas.index') }}" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">
+                                    Limpiar
+                                </a>
+                            @endif
+                        </div>
+                    </form>
 
-        <div class="mt-4 flex justify-between items-center">
-            <div class="text-sm text-gray-600">
-                Mostrando {{ $reservas->firstItem() ?? 0 }} - {{ $reservas->lastItem() ?? 0 }} de {{ $reservas->total() }} resultados
-            </div>
-            <div>
-                {{ $reservas->links() }}
+                    <!-- Tabla de Reservas -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Horario</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach($reservas as $reserva)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $reserva->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $reserva->user->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $reserva->fecha }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $reserva->servicio->nombre }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">
+                                        {{ Str::limit($reserva->servicio->descripcion, 50) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $reserva->servicio->horario }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="{{ route('reservas.edit', $reserva) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</a>
+                                        <form action="{{ route('reservas.destroy', $reserva) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900" 
+                                                    onclick="return confirm('¿Estás seguro de eliminar esta reserva?')">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginación -->
+                    <div class="mt-6">
+                        {{ $reservas->links() }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

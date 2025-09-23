@@ -59,7 +59,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::resource('servicios', ServicioController::class)->middleware('role:admin');
-    Route::resource('reservas', ReservaController::class);
+    Route::resource('reservas', ReservaController::class)->middleware(['auth']);
+    Route::resource('servicios', ServicioController::class)->middleware(['auth']);
 });
 
