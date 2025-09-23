@@ -12,11 +12,19 @@ class ReservaController extends Controller
     {
         $q = $request->input('q');
 
-        $query = Reserva::with(['servicio', 'user']); //  Agregar relación con user
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // ✅ USUARIOS REGULARES solo ven SUS reservas, ADMIN ve todas
+        if ($user->hasRole('admin')) {
+            $query = Reserva::with(['servicio', 'user']);
+        } else {
+            $query = Reserva::with(['servicio', 'user'])->where('user_id', $user->id);
+        }
 
         if ($q) {
             $query->whereHas('user', function($sub) use ($q) {
-                    $sub->where('name', 'like', "%{$q}%"); //  Buscar por nombre de usuario
+                    $sub->where('name', 'like', "%{$q}%");
                 })
                 ->orWhereHas('servicio', function($sub) use ($q) {
                     $sub->where('nombre', 'like', "%{$q}%");
@@ -28,34 +36,51 @@ class ReservaController extends Controller
         return view('reservas.index', compact('reservas', 'q'));
     }
 
+    // ✅ Método para admin ver todas las reservas (vista especial)
+    public function adminIndex(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        
+        if (!$user->hasRole('admin')) {
+            abort(403, 'Acceso denegado.');
+        }
+
+        $q = $request->input('q');
+        $query = Reserva::with(['servicio', 'user']);
+
+        if ($q) {
+            $query->whereHas('user', function($sub) use ($q) {
+                    $sub->where('name', 'like', "%{$q}%");
+                })
+                ->orWhereHas('servicio', function($sub) use ($q) {
+                    $sub->where('nombre', 'like', "%{$q}%");
+                });
+        }
+
+        $reservas = $query->orderBy('fecha', 'desc')->paginate(10)->withQueryString();
+
+        return view('admin.reservas-index', compact('reservas', 'q'));
+    }
 
     public function create()
     {
         $servicios = Servicio::all();
         return view('reservas.create', compact('servicios'));
     }
-    // modificado store :v
+
     public function store(Request $request)
     {
         $data = $request->validate([
             'servicio_id' => 'required|exists:servicios,id',
             'fecha' => 'required|date',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // <-- agregado
         ]);
 
-        $data['user_id'] = Auth::id(); // Guardar el usuario autenticado
-
-        // Guardar la imagen si existe
-        if ($request->hasFile('imagen')) {
-            $data['imagen'] = $request->file('imagen')->store('reservas', 'public');
-        }
+        $data['user_id'] = Auth::id();
 
         Reserva::create($data);
-
         return redirect()->route('reservas.index')->with('success','Reserva creada.');
     }
-
-
 
     public function edit(Reserva $reserva)
     {
@@ -70,10 +95,17 @@ class ReservaController extends Controller
             'fecha' => 'required|date',
         ]);
 
-        $data['user_id'] = Auth::id(); // Mantener el usuario autenticado
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // ✅ Solo admin puede cambiar el user_id, usuarios regulares mantienen su ID
+        if ($user->hasRole('admin')) {
+            $data['user_id'] = $request->input('user_id', $reserva->user_id);
+        } else {
+            $data['user_id'] = $user->id;
+        }
 
         $reserva->update($data);
-
         return redirect()->route('reservas.index')->with('success','Reserva actualizada.');
     }
 
