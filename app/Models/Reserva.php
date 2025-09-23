@@ -8,7 +8,7 @@ class Reserva extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['servicio_id','user_id','fecha','imagen']; 
+    protected $fillable = ['servicio_id','user_id','fecha'];
 
     public function servicio()
     {

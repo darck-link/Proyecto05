@@ -11,8 +11,7 @@
                     ← Regresar
                 </a>
 
-                <!-- AÑADIR enctype PARA ARCHIVOS -->
-                <form action="{{ route('reservas.store') }}" method="POST" class="space-y-6" enctype="multipart/form-data">
+                <form action="{{ route('reservas.store') }}" method="POST" class="space-y-6">
                     @csrf
 
                     <div>
@@ -38,12 +37,6 @@
                         </select>
                     </div>
 
-                    <!-- NUEVO CAMPO OPCIONAL PARA IMAGEN -->
-                    <div>
-                        <label for="imagen" class="block text-sm font-medium text-gray-700 mb-1">Detalles adicionales (opcional)</label>
-                        <input type="file" name="imagen" accept="image/*"
-                               style="padding:6px; border:1px solid #d1d5db; border-radius:6px; width:100%;">
-                    </div>
 
                     <button type="submit" 
                             class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow w-full">

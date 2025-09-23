@@ -66,15 +66,9 @@ class ReservaController extends Controller
         $data = $request->validate([
             'servicio_id' => 'required|exists:servicios,id',
             'fecha' => 'required|date',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // <-- agregado
         ]);
 
         $data['user_id'] = Auth::id(); // Mantener el usuario autenticado
-
-        // Guardar la imagen si existe
-        if ($request->hasFile('imagen')) {
-            $data['imagen'] = $request->file('imagen')->store('reservas', 'public');
-        }
 
         $reserva->update($data);
 
