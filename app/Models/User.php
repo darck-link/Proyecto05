@@ -21,7 +21,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    // 👇 Agrega el trait aquí
+    // Agrega el trait aquí
     use HasRoles;
 
     /**
