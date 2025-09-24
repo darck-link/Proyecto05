@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">➕ Nuevo Servicio</h2>
+                <h2 class="font-semibold text-xl text-gray-900 leading-tight">Nuevo Servicio</h2>
                 <p class="text-sm text-gray-600 mt-1">Agrega un nuevo servicio al sistema</p>
             </div>
         </div>
@@ -10,13 +10,15 @@
 
     <div class="py-8">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl border border-gray-200">
                 <!-- Header del Formulario -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-blue-100 rounded-lg">
-                                <span class="text-blue-600">📋</span>
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
                             </div>
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">Crear Nuevo Servicio</h3>
@@ -24,8 +26,11 @@
                             </div>
                         </div>
                         <a href="{{ route('servicios.index') }}" 
-                           class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg border flex items-center gap-2 transition duration-150">
-                            ← Volver al listado
+                           class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg border flex items-center gap-2 transition duration-200 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Volver al listado
                         </a>
                     </div>
                 </div>
@@ -38,7 +43,9 @@
                         <!-- Nombre -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                                <span>📛</span>
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
                                 Nombre del Servicio
                                 <span class="text-red-500">*</span>
                             </label>
@@ -57,7 +64,9 @@
                         <!-- Descripción -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                                <span>📝</span>
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
                                 Descripción
                             </label>
                             <textarea name="descripcion" placeholder="Describe el servicio..." rows="4"
@@ -68,7 +77,9 @@
                         <!-- Horario -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                                <span>⏰</span>
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
                                 Horario
                                 <span class="text-red-500">*</span>
                             </label>
@@ -89,21 +100,24 @@
                         <!-- Imagen -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                                <span>🖼️</span>
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
                                 Imagen del Servicio
                             </label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition duration-150">
-                                <input type="file" name="imagen" id="imagen" accept="image/*" 
-                                       class="hidden" onchange="previewImage(this)">
-                                <label for="imagen" class="cursor-pointer">
-                                    <div class="text-4xl mb-2">📁</div>
-                                    <p class="text-gray-600">Haz clic para subir una imagen</p>
-                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Máx. 2MB)</p>
-                                </label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition duration-150 cursor-pointer" onclick="document.getElementById('imagen').click()">
+                                <input type="file" name="imagen" id="imagen" accept="image/*" class="hidden" onchange="previewImage(this)">
+                                <div class="text-4xl mb-2 text-gray-400">
+                                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-600">Haz clic para subir una imagen</p>
+                                <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Máx. 2MB)</p>
                             </div>
                             <div id="imagePreview" class="mt-3 hidden">
-                                <img id="preview" class="w-32 h-32 object-cover rounded-lg border">
-                                <button type="button" onclick="removeImage()" class="text-red-500 text-sm mt-2">🗑️ Eliminar imagen</button>
+                                <img id="preview" class="w-32 h-32 object-cover rounded-lg border shadow-sm">
+                                <button type="button" onclick="removeImage()" class="text-red-500 text-sm mt-2 hover:text-red-700 transition duration-150">Eliminar imagen</button>
                             </div>
                             @error('imagen')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -113,12 +127,18 @@
                         <!-- Botones -->
                         <div class="flex gap-3 pt-4">
                             <button type="reset" 
-                                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition duration-150">
-                                🔄 Limpiar
+                                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition duration-150 flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Limpiar
                             </button>
                             <button type="submit" 
                                     class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition duration-150 flex items-center justify-center gap-2">
-                                💾 Guardar Servicio
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Guardar Servicio
                             </button>
                         </div>
                     </form>
@@ -153,23 +173,5 @@
             document.getElementById('imagen').value = '';
             document.getElementById('imagePreview').classList.add('hidden');
         }
-
-        // Validación del formulario
-        document.getElementById('servicioForm').addEventListener('submit', function(e) {
-            const nombre = document.querySelector('input[name="nombre"]').value.trim();
-            const horario = document.querySelector('select[name="horario"]').value;
-            
-            if (!nombre) {
-                e.preventDefault();
-                alert('Por favor ingresa el nombre del servicio');
-                return false;
-            }
-            
-            if (!horario) {
-                e.preventDefault();
-                alert('Por favor selecciona un horario');
-                return false;
-            }
-        });
     </script>
 </x-app-layout>
